@@ -52,7 +52,7 @@ Live demo: file:///C:/Users/aaliy/Documents/Aaliyahs%20Projects/E%20Commerce%20s
 3. Open `index.html` in your browser  
 
 ## About Me
-Hi, I’m Aaliyah 👋  
+Hi, I’m Aaliyah 
 I’m an aspiring software developer passionate about creating digital solutions
 that celebrate culture, amplify African voices, and connect communities.
 
