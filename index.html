@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> African Literature </title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #f8f4f1;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #a67856;
+      padding: 1rem;
+      text-align: center;
+      color: white;
+    }
+    #search {
+      padding: 0.5rem;
+      margin-top: 1rem;
+      width: 80%;
+    }
+    nav {
+      text-align: center;
+      margin: 1rem 0;
+    }
+    nav button {
+      background-color: #f2e2d0;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin: 0.2rem;
+      cursor: pointer;
+    }
+    .collection {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .book {
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      width: 200px;
+      padding: 1rem;
+      transition: transform 0.3s;
+    }
+    .book:hover {
+      transform: scale(1.05);
+    }
+    .book img {
+      width: 100%;
+      border-radius: 4px;
+    }
+    .book h3 {
+      font-size: 1.1rem;
+      margin: 0.5rem 0 0;
+    }
+    .book p {
+      margin: 0.3rem 0;
+    }
+    #community {
+      padding: 1rem;
+      background-color: #fff7f0;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 0.5rem;
+    }
+    #discussion-thread {
+      margin-top: 1rem;
+    }
+    .discussion-post {
+      background: #f2e2d0;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      font: arial;
+    }
+
+    #creator {
+  background: #fdf6f0;
+  padding: 3rem 2rem;
+  color: #4b3b2a;
+  font-family: 'Georgia', serif;
+}
+
+.creator-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.creator-img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.creator-info {
+  max-width: 600px;
+}
+
+.creator-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #3e2c23;
+}
+
+.creator-info p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Aaliyah's African Literature Store</h1>
+    <input type="text" id="search" placeholder="Search by title, author, genre..." oninput="searchBooks()" />
+  </header>
+
+  <nav>
+    <button onclick="filterBooks('All')">All</button>
+    <button onclick="filterBooks('Fiction')">Fiction</button>
+    <button onclick="filterBooks('Memoir')">Memoir</button>
+    <button onclick="filterBooks('History')">History</button>
+    <button onclick="filterBooks('Poetry')">Poetry</button>
+  </nav>
+
+  <section id="collections">
+    <h2 style="text-align:center">Curated Collections</h2>
+    <div class="collection" id="book-list"></div>
+  </section>
+
+  <section id="creator">
+    <div class="creator-container">
+      <img src="images/04b490fa-4410-46a6-8721-4029781fa4f5.jpg" alt="Aaliyah's Photo" class="creator-img" />
+      <div class="creator-info">
+        <h2>Meet the Creator</h2>
+        <p>
+          Hi, I'm <strong>Aaliyah</strong> — a self-taught web developer and creative technologist passionate about telling stories, building community, and spotlighting African and diasporan voices through technology. 
+          This bookstore is a love letter to the power of literature in shaping identity, culture, and change.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+
+  <section id="community">
+    <h2>Book Club & Discussions</h2>
+    <textarea id="discussion-input" placeholder="Share your thoughts..."></textarea>
+    <button onclick="postDiscussion()">Post</button>
+    <div id="discussion-thread"></div>
+  </section>
+
+  <script>
+    const books = [
+      { title: "Girl, Woman, Other", author: "Bernardine Evaristo", genre: "Fiction", price: 269.99 , rating: 4.5, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTE5EMZolKb3gss1bM5rr_QBc9eZbs3ivPcA&s" },
+      { title: "Half of a Yellow Sun", author: "Chimamanda Ngozi Adichie", genre: "Fiction", price: 239.99 , rating: 4.8, image: "https://exclusivebooks.co.za/cdn/shop/files/9780007200283.jpg?v=1741071231" },
+      { title: "Americanah", author: "Chimamanda Ngozi Adichie", genre: "Fiction", price: 259.99, rating: 4.7, image: "https://exclusivebooks.co.za/cdn/shop/files/9780007356348.jpg?height=645&pad_color=fff&v=1741071269&width=315" },
+      { title: "Born a Crime", author: "Trevor Noah", genre: "Memoir", price: 229.99, rating: 4.9, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpENmOV27sFQaKtQqPnM8AzREg2HLx_SXuPA&s" },
+      { title: "Things Fall Apart", author: "Chinua Achebe", genre: "Fiction", price: 209.99, rating: 4.6, image: "https://pentzbooks.co.za/cdn/shop/files/9780141186887-fr.jpg?v=1690202057" },
+      { title: "We Should All Be Feminists", author: "Chimamanda Ngozi Adichie", genre: "Memoir", price: 179.99, rating: 4.7, image: "https://booklounge.co.za/wp-content/uploads/2020/10/we-should-all-be-feminists.jpg" },
+      { title: "Homegoing", author: "Yaa Gyasi", genre: "Fiction", price: 229.99, rating: 4.8, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd5CSfX816P8-pHByhbZ70DiFp8HwzCqhtWg&s" },
+      { title: "The Shadow King", author: "Maaza Mengiste", genre: "History", price: 259.99, rating: 4.3, image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1555946748i/43726511.jpg" },
+      { title: "The Secret Lives of Baba Segi’s Wives", author: "Lola Shoneyin", genre: "Fiction", price: 229.99, rating: 4.4, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfMCgg4XNkfKgR5rWe4EoFzVYzI2mNYQuXjw&s" },
+      { title: "Freshwater", author: "Akwaeke Emezi", genre: "Fiction", price: 209.99, rating: 4.5, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREH1_bahsnvQzFkxJlTIg2QXM8g0MfNayakA&s" }
+    ];
+
+    const bookList = document.getElementById('book-list');
+    function displayBooks(filtered = books) {
+      bookList.innerHTML = '';
+      filtered.forEach(book => {
+        bookList.innerHTML += `
+          <div class="book">
+            <img src="${book.image}" alt=" R{book.title}" />
+            <h3>${book.title}</h3>
+            <p><em>${book.author}</em></p>
+            <p>Genre: ${book.genre}</p>
+            <p>Price: ${book.price}</p>
+            <p>Rating: ⭐ ${book.rating}</p>
+          </div>
+        `;
+      });
+    }
+    function filterBooks(genre) {
+      if (genre === 'All') displayBooks();
+      else displayBooks(books.filter(b => b.genre === genre));
+    }
+    function searchBooks() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const results = books.filter(book => book.title.toLowerCase().includes(query) || book.author.toLowerCase().includes(query) || book.genre.toLowerCase().includes(query));
+      displayBooks(results);
+    }
+    function postDiscussion() {
+      const input = document.getElementById('discussion-input');
+      const thread = document.getElementById('discussion-thread');
+      if (input.value.trim()) {
+        thread.innerHTML += `<div class="discussion-post">${input.value}</div>`;
+        input.value = '';
+      }
+    }
+    displayBooks();
+  </script>
+</body>
+</html>
